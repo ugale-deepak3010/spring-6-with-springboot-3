@@ -6,6 +6,7 @@ import com.DeepHotel.Model.Room;
 import com.DeepHotel.Repository.GuestRepo;
 import com.DeepHotel.Repository.ReservationRepo;
 import com.DeepHotel.Repository.RoomRepo;
+import com.DeepHotel.Service.RoomReservationService;
 
 import java.util.Optional;
 
@@ -24,9 +25,13 @@ public class CLRunner implements CommandLineRunner {
 	@Autowired
 	ReservationRepo reservationRepo;
 	
+	@Autowired
+	RoomReservationService roomReservationService;
+	
 	@Override
 	public void run(String... args) throws Exception {
 		
+		/*
 		System.err.println("**** GUESTS ****");
 		guestRepo.findAll().forEach(System.out::println);
 		
@@ -40,6 +45,9 @@ public class CLRunner implements CommandLineRunner {
 		
 		Optional<Room> room= roomRepo.findByRoomNumberIgnoreCase("p1");
 		System.out.println(room);
+		*/
+		
+		roomReservationService.getRoomReservationForDate("2023-08-28").forEach(rs->System.out.println(rs));
 		
 		
 		
