@@ -27,7 +27,7 @@ public class RoomReservationService {
 	@Autowired
 	ReservationRepo reservationRepo;
 
-	public List<RoomReservation> getRoomReservationForDate(String reservationDate) {
+	public List<RoomReservation> getRoomReservationForDate(String reservationDate, boolean getAll) {
 
 		Date resDate;
 
@@ -56,16 +56,27 @@ public class RoomReservationService {
 
 			roomReservation.setReservationId(res.getId());
 			roomReservation.setReservationDate(res.getResDate().toString());
-			
-			Optional<Guest> guest= guestRepo.findById(res.getGuestId());
-			
+
+			Optional<Guest> guest = guestRepo.findById(res.getGuestId());
+
 			roomReservation.setGuestId(guest.get().getId());
 			roomReservation.setFirstName(guest.get().getFirstName());
 			roomReservation.setLastName(guest.get().getLastName());
-			
+
 		});
 
-		return roomReservationMap.values().stream().toList();
+		return roomReservationMap.values().stream().filter(rs->{
+			
+			if (getAll) {
+				return true;
+			}
+			if (rs.getReservationDate()!=null) {
+				if (rs.getReservationDate().equals(reservationDate)) {
+					return true;
+				}
+			}
+			return false;
+		} ).toList();
 
 	}
 
